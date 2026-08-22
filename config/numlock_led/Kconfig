@@ -1,0 +1,3 @@
+config NUMLOCK_LED
+    bool "Layer-driven NumLock LED"
+    default y
