@@ -30,7 +30,22 @@ ZMK_LISTENER(numlock_led, numlock_led_listener);
 ZMK_SUBSCRIPTION(numlock_led, zmk_layer_state_changed);
 ZMK_SUBSCRIPTION(numlock_led, zmk_activity_state_changed);
 
+/*
 static int numlock_led_init(void) {
+    numlock_led_apply();
+    return 0;
+}
+*/
+static int numlock_led_init(void) {
+    if (!device_is_ready(numlock_led.port)) {
+        return -ENODEV;
+    }
+
+    int ret = gpio_pin_configure_dt(&numlock_led, GPIO_OUTPUT_INACTIVE);
+    if (ret < 0) {
+        return ret;
+    }
+
     numlock_led_apply();
     return 0;
 }
