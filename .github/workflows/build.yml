@@ -1,0 +1,36 @@
+name: Build ZMK Firmware (Manual)
+
+run-name: ZMK Build [${{ github.event.inputs.edition }}] by @${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      edition:
+        description: 'ビルドするエディションを選択してください'
+        required: true
+        default: 'v1'
+        type: choice
+        options:
+          - 'v1 (プロトタイプ)'
+          - 'v2 (回路変更版)'
+          - 'v3_(nrf52840 plus版)'
+
+jobs:
+  pick:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix_path: ${{ steps.pick.outputs.path }}
+    steps:
+      - id: pick
+        run: |
+          case "${{ github.event.inputs.edition }}" in
+            "v1 (プロトタイプ)")    echo "path=builds/build-v1.yaml" >> "$GITHUB_OUTPUT" ;;
+            "v2 (回路変更版)")      echo "path=builds/build-v2.yaml" >> "$GITHUB_OUTPUT" ;;
+            "v3_(nrf52840 plus版)") echo "path=builds/build-v3.yaml" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+  build:
+    needs: pick
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+    with:
+      build_matrix_path: ${{ needs.pick.outputs.matrix_path }}
