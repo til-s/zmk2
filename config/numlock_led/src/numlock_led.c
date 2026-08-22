@@ -12,13 +12,20 @@
 
 static const struct gpio_dt_spec numlock_led =
     GPIO_DT_SPEC_GET(DT_NODELABEL(num_lock_led), gpios);
-
+/*
 static void numlock_led_apply(void) {
     if (!device_is_ready(numlock_led.port)) {
         return;
     }
     bool active = zmk_keymap_layer_active(NUMLOCK_LAYER);
     gpio_pin_set_dt(&numlock_led, active ? 1 : 0);
+}
+*/
+static void numlock_led_apply(void) {
+    if (!device_is_ready(numlock_led.port)) {
+        return;
+    }
+    gpio_pin_set_dt(&numlock_led, 0); /* 一時的に強制OFF、レイヤー無視 */
 }
 
 static int numlock_led_listener(const zmk_event_t *eh) {
