@@ -78,7 +78,7 @@
         compatible = "gpio-leds";
 
         num_lock_led: num_lock_led {
-            gpios = <&mcp23017 5 GPIO_ACTIVE_LOW>;  /* GPA5 */
+            gpios = <&mcp23017 5 GPIO_ACTIVE_HIGH>;  /* GPA5 */
         };
 
         caps_lock_led: caps_lock_led {
@@ -90,6 +90,12 @@
     /*
      * ZMK HIDインジケーター → LED対応定義
      */
+    /*
+     * NumLock LEDはホストのHIDインジケーターではなく、
+     * config/src/numlock_layer_led.c がnumlock_layer(layer 2)の
+     * アクティブ状態から直接GPIOを制御する。
+     * (電源off/on時にレイヤーがリセットされてもLEDが必ず同期して消灯するようにするため)
+     */
     indicators {
         compatible = "zmk,indicator-leds";
 
@@ -97,12 +103,6 @@
             indicator = <HID_INDICATOR_CAPS_LOCK>;
             leds = <&caps_lock_led>;
         };
-/*
-        num_lock_indicator: num_lock {
-            indicator = <HID_INDICATOR_NUM_LOCK>;
-            leds = <&num_lock_led>;
-        };
-*/
     };
 
     kscan0: kscan {
