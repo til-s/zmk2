@@ -1,3 +1,0 @@
-# config/numlock_led/zephyr/module.yml
-manifest:
-  version: ">=0.14.0"
