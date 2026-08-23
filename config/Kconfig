@@ -1,0 +1,9 @@
+config ZMK_NUMLOCK_LAYER_LED
+    bool "NumLock LED follows numlock layer state instead of host HID indicator"
+    default y
+    help
+      Drive the NumLock LED directly from the ZMK numlock layer's
+      active/inactive state, rather than from the host-reported HID
+      NumLock indicator. This keeps the LED in sync with the actual
+      keyboard-side layer, and guarantees the LED is off after a
+      power cycle (since the layer resets to the default layer).
