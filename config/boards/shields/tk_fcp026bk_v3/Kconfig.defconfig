@@ -22,7 +22,16 @@ config ZMK_BATTERY_REPORTING
     default y
 
 # HIDインジケーター（CapsLock / NumLock LEDに必要）
+# ただし、NumLock LEDは別途独自に実装(ZMK_NUMLOCK_LAYER_LED)して対応
 config ZMK_HID_INDICATORS
+    default y
+
+# NumLock LEDをホストのHID Indicatorではなく、numlock_layer(layer 2)の
+# アクティブ状態から直接制御する(src/numlock_layer_led.cを利用)。
+# if SHIELD_TK_FCP026BK_V3 ブロック内で宣言しているため、
+# 暗黙的に「depends on SHIELD_TK_FCP026BK_V3」が付与され、v3以外では有効化されない。
+config ZMK_NUMLOCK_LAYER_LED
+    bool "NumLock LED follows numlock layer state instead of host HID indicator"
     default y
 
 endif
