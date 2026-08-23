@@ -1,2 +1,3 @@
-zephyr_library()
-zephyr_library_sources(src/numlock_led.c)
+if(CONFIG_ZMK_NUMLOCK_LAYER_LED)
+  target_sources(app PRIVATE src/numlock_layer_led.c)
+endif()
